@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Quotes</title>
+</head>
+<body>
+    <div class="wrapper" style="width: 800px; margin: auto;" >
+
+        <div class="header" style="display: flex; justify-content: space-between; margin-top: 30px; vertical-align: middle;" >
+            <div>
+                <div style="font-size: 25px;">{{ user.first_name }} {{ user.last_name }}'s Quotes</div>
+            </div>
+            <div style="display: inline;" >
+                <a href="/quotes" style="vertical-align: middle;" >Back</a>
+                <a href="/logout" style="vertical-align: middle; background-color: white; border: black 1px solid; box-shadow: black 3px 3px; padding: 5px 10px; margin: 20px;" >Logout</a>
+            </div>
+        </div>
+
+        <div class="main_container" style="margin-top: 30px; display: flex; justify-content: space-between;">
+            <div class="quotes" style="width: 40%;">
+                <div style="font-size: 20px; margin: auto; text-align: center;" ></div>
+
+                {% for quote in quotes %}
+
+                <div class="quote" style="width: 90%; border: black 2px solid; padding: 20px; margin: 5px auto 20px auto;">
+                    <div>{{ quote.author }}: "{{ quote.quote_text }}"</div>
+                    {% if quote.owner == user_in_sesh %}
+                    <a href="/delete_quote/{{ quote.id }}">Delete</a>
+                    {% endif %}
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Dashboard</title>
+</head>
+<body>
+    <div class="wrapper" style="width: 800px; margin: auto;" >
+
+        <div class="header" style="display: flex; justify-content: space-between; margin-top: 30px; vertical-align: middle;" >
+            <div>
+                <div style="font-size: 30px;">Welcome {{ user.first_name }} {{ user.last_name }}!</div>
+            </div>
+            <div style="display: inline;" >
+                <a href="/edit_account" style="vertical-align: middle;" >Edit My Account</a>
+                <a href="/logout" style="vertical-align: middle; background-color: white; border: black 1px solid; box-shadow: black 3px 3px; padding: 5px 10px; margin: 20px;" >Logout</a>
+            </div>
+        </div>
+
+        <div class="main_container" style="margin-top: 30px; display: flex; justify-content: space-between;">
+            <div class="quotes" style="width: 40%;">
+                <div style="font-size: 20px; margin: auto; text-align: center;" >Quotes</div>
+
+                {% for quote in quotes %}
+
+                <div class="quote" style="width: 90%; border: black 2px solid; padding: 20px; margin-top: 5px;">
+                    <p>{{ quote.author }}: "{{ quote.quote_text }}"</p>
+                    <p>Posted by <a href="/user/{{ quote.owner.id }}">{{ quote.owner.first_name }} {{ quote.owner.last_name}}</a></p>
+                    <p>{{ quote.liked_by.all | length }} people like this <a href="/like_quote/{{ quote.id }}"style="vertical-align: middle; background-color: white; border: black 1px solid; box-shadow: black 3px 3px; padding: 5px 10px; margin: 20px;">Like!</a></p>
+                    {% if quote.owner == user %}
+                    <a href="/delete_quote/{{ quote.id }}">Delete</a>
+                    {% endif %}
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="add_quote" style="width: 40%;">
+                <div style="font-size: 20px; margin: auto; text-align: center;" >Add a Quote!</div>
+                <form action="/add_quote/" method="POST">
+                    {% csrf_token %}
+                    <p>
+                        <label for="author" style="width: 100px;">Author</label>
+                        <input type="text" name="author" style="margin-left: 5px">
+                    </p>
+                    <p>
+                        <label for="quote_text" style="width: 100px; vertical-align: top;">Quote</label>
+                        <textarea name="quote_text" cols="30" rows="6" style="margin-left: 10px"></textarea>
+                    </p>
+                    <p>
+                        <button type="submit" style="margin-left: 53px; vertical-align: middle; background-color: white; border: black 1px solid; box-shadow: black 3px 3px; padding: 5px 10px;">
+                            Submit</button>
+                    </p>
+                </form>
+                {% if messages %}
+                <ul class="messages" style="color: red;">    
+                    {% for message in messages %}    
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
